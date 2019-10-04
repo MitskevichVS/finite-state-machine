@@ -82,7 +82,9 @@ class FSM {
         if (this.state === this.initial){
             return false;
         } else {
-            this.nextArray.push(this.state);
+            if (this.nextArray[this.nextArray.length - 1] !== this.state){
+                this.nextArray.push(this.state);
+            }
             this.state = this.prevArray.pop();
             this.transitions = this.states[this.state].transitions;
             return true;
@@ -95,9 +97,10 @@ class FSM {
      * @returns {Boolean}
      */
     redo() {
-        if (this.state === this.initial){
+        if (this.nextArray.length === 0){
             return false;
         } else {
+            this.prevArray.push(this.state);
             this.state = this.nextArray.pop();
             this.transitions = this.states[this.state].transitions;
             return true;
@@ -110,7 +113,6 @@ class FSM {
     clearHistory() {
         this.state = this.initial;
         this.transitions = this.states[this.state].transitions;
-        this.prevState = null;
     }
 }
 
